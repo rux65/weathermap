@@ -1,0 +1,25 @@
+<!Doctype html>
+
+<html>
+<head>
+<title>My Flas App Page</title>
+</head>
+
+<body>
+
+<p>Let's keep in touch!</p>
+<div id="contact-form">
+	<form method ="post" action="/signup">
+	<label for="email">Email address</label>
+	<input type="email" id="email" name="email", required="required">
+	<input type="submit" value="submit" id="submit-button">
+	</form>
+	
+</div>
+
+{%for item in coords%}
+<p>here is the text{{coords.lon}}</p>
+{%endfor%}
+
+</body>
+</html>
