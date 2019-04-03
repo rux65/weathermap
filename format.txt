@@ -1,0 +1,8 @@
+- website - input postcode, date, hour (input)
+- website that gives result (list) - heatmap included 
+
+- one python 
+- open api - weather
+
+- image - map or image sunny etc
+- 
