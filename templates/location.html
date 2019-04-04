@@ -17,34 +17,54 @@
 <head>
 
 	<link rel="SHORTCUT ICON" HREF="owm.ico">
-	<link rel="stylesheet" type="text/css" href="static/leaflet/leaflet.css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
 	<link rel="stylesheet" type="text/css" href="static/leaflet-openweathermap.css" />
 	<link rel="stylesheet" type="text/css" href="static/files/map.css" />
+	
 	<script src="static/leaflet/leaflet.js"></script>
+	
 	<script src="static/leaflet/Permalink.js"></script>
 	<script src="static/leaflet/Permalink.Layer.js"></script>
 	<script src="static/leaflet/Permalink.Overlay.js"></script>
 	<script src="static/leaflet-openweathermap.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/leaflet/leaflet-languageselector.css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet-languageselector.css') }}">
+
 	<script src="static/leaflet/leaflet-languageselector.js"></script>
 	<script src="static/files/map_i18n.js"></script>
 	<script src="static/files/map.js"></script>
 	
-	<script type="text/javascript" src="static/leaflet.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/leaflet-openweathermap.css" />
+	<script type="text/javascript" src="leaflet/leaflet.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet-openweathermap.css') }}">
 	<script type="text/javascript" src="static/leaflet-openweathermap.js"></script>
 </head>
 
-<div id="map"></div>
+<div id="map2"></div>
+
+
 	<script>
-		
+		/*
 		initMap();
 		//if (!confirm("Please not that this page is only a demonstration for an OpenWeatherMap leaflet plugin.\nIt is not intended for productive use.\n\nVisit https://github.com/buche/leaflet-openweathermap for more information.\n\nClick OK to proceed with the map or click Cancel to visit Github.")) {
 		//	window.location.href = "https://github.com/buche/leaflet-openweathermap";
-		//}
-
-		
+		//} */
 	</script>
+	
+	
+<div id="map"></div>
+ 
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
+    <script src="OWM.js"></script>
+    <script>
+        var map = L.map('map').setView([60, 50], 3);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        }).addTo(map);
+        
+        var owm = new L.OWMLayer({key: '2bb229a44403af08980fc4be234f94a9'});
+        map.addLayer(owm);
 
 </body>
 
