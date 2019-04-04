@@ -6,7 +6,7 @@
 
 L.OWM = L.TileLayer.extend({
 	options: {
-		appId: 'GET_YOUR_OWN_APPID', /* pass your own AppId as parameter when creating the layer. Get your own AppId at https://www.openweathermap.org/appid */
+		appId: '2bb229a44403af08980fc4be234f94a9', /* pass your own AppId as parameter when creating the layer. Get your own AppId at https://www.openweathermap.org/appid */
 		baseUrl: "https://{s}.tile.openweathermap.org/map/{layername}/{z}/{x}/{y}.png",
 		maxZoom: 18,
 		showLegend: true,
@@ -610,7 +610,10 @@ L.OWM.Current = L.Layer.extend({
 						, popupAnchor: new L.Point(0, -10)
 						, html: this._icondivtext(station, imageData.url, imageData.width, imageData.height)
 					});
-		var marker = L.marker([station.coord.Lat, station.coord.Lon], {icon: icon});
+		{%for item in coord%}			
+		var marker = L.marker([{{api.coord.lat}}, {{api.coord.lon}}], {icon: icon});
+		{%endfor%}		
+		//var marker = L.marker([station.coord.Lat, station.coord.Lon], {icon: icon});
 		return marker;
 	},
 
