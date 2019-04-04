@@ -1,7 +1,7 @@
 import requests
 import json
 from flask import Flask , render_template, request
-
+import gmaps 
 
 app=Flask("myApp")
 	
@@ -15,9 +15,10 @@ def meh():
 	
 	print(var)
 
+
+	
 endpoint = "http://api.openweathermap.org/data/2.5/weather"
-	
-	
+
 	#print (response.url)#
 	#print (response.status_code)
 	#print (response.headers["content-type"])
@@ -33,10 +34,8 @@ def weather_reply():
 	api = json.loads(response.text)
 	coord = [api["coord"]]
 	weather= api["weather"]
+	print(response.text)
 	return render_template("location.html", api=api,coord=coord, weather=weather)
 
 app.run(debug=True) # always run with debug true 
 
-
-
-	
