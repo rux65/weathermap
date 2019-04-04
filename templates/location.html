@@ -1,0 +1,18 @@
+{%extends "weatherApi.html"%}
+{%block body%}
+
+<body>
+
+{%for item in coord%}
+<p>weather at longitude{{api.coord.lon}} and latitude {{api.coord.lat}} is:</p>
+{%endfor%}
+
+
+<ul>
+<li><p>{%for item in weather%} {{item.description}} {%endfor%}</p></li>
+<li></li>
+</ul>
+
+</body>
+
+{%endblock%}
