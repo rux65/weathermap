@@ -8,14 +8,14 @@
 var map;
 
 
-/**
+
  * Add or replace a parameter (with value) in the given URL.
  * By Adil Malik, https://stackoverflow.com/questions/1090948/change-url-parameters/10997390#10997390
  * @param String url the URL
  * @param String param the parameter
  * @param String paramVal the value of the parameter
  * @return String the changed URL
- */
+ *
 function updateURLParameter(url, param, paramVal) {
 	var theAnchor = null;
 	var newAdditionalURL = "";
@@ -201,14 +201,11 @@ function windroseAdded(e) {
  * Example function to replace leaflet-openweathermap's builtin marker.
  */
  
-
 function myOwmMarker(data) {
 	// just a Leaflet default marker
-	//let data.coord.Lat={{api.coord.lat}};
-	//let data.coord.Lon = 
 	return L.marker([data.coord.Lat, data.coord.Lon]);
-
 }
+
 
 /**
  * Example function to replace leaflet-openweathermap's builtin popup.
@@ -217,6 +214,7 @@ function myOwmPopup(data) {
 	// just a Leaflet default popup
 	return L.popup().setContent(typeof data.name != 'undefined' ? data.name : data.id);
 }
+
 
 /**
  * Toggle scroll wheel behaviour.
@@ -228,7 +226,7 @@ function toggleWheel(localLang) {
 		document.getElementById('wheeltxt').innerHTML = getI18n('scrollwheel', localLang) + ' ' + getI18n('off', localLang);
 	} else {
 		map.scrollWheelZoom.enable();
-		document.getElementById('wheelimg').src = 'files/ScrollWheel20.png';
+		document.getElementById('wheelimg').src = 'static/files/ScrollWheel20.png';
 		document.getElementById('wheeltxt').innerHTML = getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang);
 	}
 }
@@ -237,13 +235,20 @@ function toggleWheel(localLang) {
  * Initialize the map.
  */
 function initMap() {
-	{%for item in coord%}
-var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord.lat}}}/{{{api.coord.lon}}}.png', {
+	
+	/*var standard=L.tileLayer("ihttp://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?appid={2bb229a44403af08980fc4be234f94a9}",{
+		maxZoom:17,
+		lat:50;
+		lon:0;
+	}*/
+	
+	
+	var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</a>'
 		});
-		{%endfor%}
-	var humanitarian = L.tileLayer('https://tile-{s}.openstreetmap.fr/hot/{16}/{x}/{y}.png', {
+		
+	var humanitarian = L.tileLayer('https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
 		maxZoom: 17,
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</a> <a href="https://www.hotosm.org/" target="_blank">Tiles courtesy of Humanitarian OpenStreetMap Team</a>'
 		});
@@ -251,12 +256,15 @@ var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord
 	var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{16}/{y}/{x}.jpg", {
 		maxZoom: 19, attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 	});
-
+	
+	
 	// Get your own free OWM API key at https://www.openweathermap.org/appid - please do not re-use mine!
 	// You don't need an API key for this to work at the moment, but this will change eventually.
+	
+	
 	var OWM_API_KEY = '2bb229a44403af08980fc4be234f94a9';
 
-	var clouds = L.OWM.clouds({opacity: 0.8, legendImagePath: 'files/NT2.png', appId: OWM_API_KEY});
+	var clouds = L.OWM.clouds({opacity: 0.8, legendImagePath: 'static/files/NT2.png', appId: OWM_API_KEY});
 	var cloudscls = L.OWM.cloudsClassic({opacity: 0.5, appId: OWM_API_KEY});
 	var precipitation = L.OWM.precipitation( {opacity: 0.5, appId: OWM_API_KEY} );
 	var precipitationcls = L.OWM.precipitationClassic({opacity: 0.5, appId: OWM_API_KEY});
@@ -276,33 +284,35 @@ var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord
 			appId: OWM_API_KEY, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,
    			imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
 	windrose.on('owmlayeradd', windroseAdded, windrose); // Add an event listener to get informed when windrose layer is ready
-
+	
 	//var useGeolocation = false;
+	
+	
 	{%for item in coord%}
-	var zoom = 20;
-	//var lat = 51.58;
-	//var lon = 10.1;
-	var lat = {{lat:{{api.coord.lat}};
-	var lon = {{api.coord.lon}};
+	let zoom =50;
+	//let lat = 51.58;
+	//let lon = 0.1;
+	let lat = {{api.coord.lat}};
+	let lon = {{api.coord.lon}};
 	{%endfor%}
-	//var urlParams = getUrlParameters();
-	//if (typeof urlParams.zoom != "undefined" && typeof urlParams.lat != "undefined" && typeof urlParams.lon != "undefined") {
-		//zoom = urlParams.zoom;
-		//lat = urlParams.lat;
-		//lon = urlParams.lon;
-		//useGeolocation = false;
-	//}
-	{%for item in coord%}
+	var urlParams = getUrlParameters();
+	if (typeof urlParams.zoom != "undefined" && typeof urlParams.lat != "undefined" && typeof urlParams.lon != "undefined") {
+		zoom = urlParams.zoom;
+		lat = urlParams.lat;
+		lon = urlParams.lon;
+		useGeolocation = false;
+	}
+	
 	map = L.map('map', {
-		center: new L.LatLng({{api.coord.lat}}, {{api.coord.lon}}), zoom: zoom,
+		center: new L.LatLng(lat, lon), zoom: zoom,
 		layers: [standard]
 	});
-	{%endfor%}
-	map.attributionControl.setPrefix("");
 
+	map.attributionControl.setPrefix("");
+	
 	map.addControl(L.languageSelector({
 		languages: new Array(
-			L.langObject('en', 'English', 'static\mapicons\en.png')
+			L.langObject('en', 'English', 'static/mapicons/{{en.png}}') //static\mapicons\en.png
 		,	L.langObject('de', 'Deutsch', 'static/mapicons/de.png')
 		,	L.langObject('fr', 'Français', 'static/mapicons/fr.png')
 		,	L.langObject('it', 'Italiano', 'static/mapicons/it.png')
@@ -323,7 +333,7 @@ var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord
 		, "OSM Humanitarian": humanitarian
 	//	, "ESRI Aerial": esri
 	};
-
+	
 	var overlayMaps = {};
 	overlayMaps[getI18n('clouds', localLang)] = clouds;
 	overlayMaps[getI18n('cloudscls', localLang)] = cloudscls;
@@ -338,7 +348,9 @@ var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord
 	overlayMaps[getI18n('presscont', localLang)] = pressurecntr;
 	overlayMaps[getI18n('city', localLang) + " (min Zoom 5)"] = city;
 	overlayMaps[getI18n('windrose', localLang)] = windrose;
-
+	
+	
+	
 	var layerControl = L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
 	map.addControl(new L.Control.Permalink({layers: layerControl, useAnchor: false, position: 'bottomright'}));
 
@@ -361,10 +373,11 @@ var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{16}/{{{api.coord
 	patch.innerHTML = getI18n('prefs', localLang); // 'Preferences';
 	layerControl._form.children[0].parentNode.insertBefore(patch, null);
 	patch = L.DomUtil.create('div', '');
-	patch.innerHTML = '<div id="wheeldiv" onClick="toggleWheel(\'' + localLang + '\')"><img id="wheelimg" src="files/ScrollWheel20.png" align="middle" > <span id="wheeltxt">' + getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang) + '</span></div>';
+	patch.innerHTML = '<div id="wheeldiv" onClick="toggleWheel(\'' + localLang + '\')"><img id="wheelimg" src="static/files/ScrollWheel20.png" align="middle" > <span id="wheeltxt">' + getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang) + '</span></div>';
 	layerControl._form.children[0].parentNode.insertBefore(patch, null);
 
 	//if (useGeolocation && typeof navigator.geolocation != "undefined") {
 	//	navigator.geolocation.getCurrentPosition(foundLocation);
 	//}
 }
+
