@@ -5,9 +5,9 @@ html, body {
 }
 
 #map {
-	width: 60%;
+	width: 600px;
 	height: 60%;
-	margin: 0, auto;
+	margin: 0 auto;
 }
 
 .bold {
