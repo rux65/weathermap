@@ -34,14 +34,16 @@ def weather_reply():
 	api = json.loads(response.text)
 	coord = [api["coord"]]
 	weather= api["weather"]
+	main=[api["main"]]
+	wind=api["wind"]
 	#print (api["coord"]["lon"]+1)
 	
 	
 	r=requests.get("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f" %(api['coord']['lat']+0.2, api['coord']['lon']+0.2))
 	print(r.text)
 	
-	#print(response.text)
-	return render_template("location2.html", api=api,coord=coord, weather=weather)
+	print(response.text)
+	return render_template("location.html", api=api,coord=coord, weather=weather,main=main, wind=wind)
 
 	
 app.run(debug=True) # always run with debug true 
