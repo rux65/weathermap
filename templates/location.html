@@ -1,19 +1,6 @@
 {%extends "weatherApi.html"%}
 {%block body%}
 
-<body>
-
-{%for item in coord%}
-<p>weather at longitude{{api.coord.lon}} and latitude {{api.coord.lat}} is:</p>
-{%endfor%}
-
-
-<ul>
-<li><p>{%for item in weather%} {{item.description}} {%endfor%}</p></li>
-<li></li>
-</ul>
-
-
 <head>
 
 	<link rel="SHORTCUT ICON" HREF="owm.ico">
@@ -21,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="static/leaflet-openweathermap.css" />
 	<link rel="stylesheet" type="text/css" href="static/files/map.css" />
 	
+	<script src="static/leaflet.js"></script>
 	<script src="static/leaflet/leaflet.js"></script>
 	
 	<script src="static/leaflet/Permalink.js"></script>
@@ -30,41 +18,77 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet-languageselector.css') }}">
 
 	<script src="static/leaflet/leaflet-languageselector.js"></script>
-	<script src="static/files/map_i18n.js"></script>
+	<script src="staticfiles/map_i18n.js"></script>
 	<script src="static/files/map.js"></script>
 	
 	<script type="text/javascript" src="leaflet/leaflet.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet-openweathermap.css') }}">
-	<script type="text/javascript" src="static/leaflet-openweathermap.js"></script>
+	<script type=" text/javascript" src="static/leaflet-openweathermap.js"></script>
+	
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
+    <script src="static/OWM.js"></script>
+	
+	 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="static/heatmap.js"></script>
+    <script src="/plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
 </head>
 
-<div id="map2"></div>
+<body>
+
+{%for item in coord%}
+<p>weather at longitude{{api.coord.lon}} and latitude {{api.coord.lat}} is:</p>
+{%endfor%}
+
+<img src="{{url_for('static', filename='sun.png', width=100)}}">
+<ul style="width:70%; margin:0 auto; border:1px solid; background:grey; border-radius:5px; list-style-type:none;">
+<li>
+{% if api["weather"]["main"]=="Rain" %}
+<img src="{{url_for('static', filename='sun.png', width=100)}}">papa
+{%elif api["weather"]["main"]=="Sunny" %}
+<img src="{{url_for('static', filename='es.png', width=100)}}">mama
+{%endif%}
+</li>
+<li>{%for item in weather%} {{item.main}} {%endfor%}
+<li><p>Status:{%for item in weather%} {{item.description}} {%endfor%}</p></li>
+<li><p>Temperature: {%for item in main%} {{api.main.temp}} {%endfor%}</p></li>
+<li><p>Expected Low: {%for item in main%} {{item.temp_min}} {%endfor%}</p></li>
+<li><p>Expected High: {%for item in main%} {{item.temp_max}} {%endfor%}</p></li>
+<li><p>Humidity{%for item in main%} {{item.humidity}} {%endfor%}</p></li>
+</ul>
+
+
+
+
+<div id="map" style="width:70%;margin:0 auto" ></div>
+
 
 
 	<script>
-		/*
-		initMap();
-		//if (!confirm("Please not that this page is only a demonstration for an OpenWeatherMap leaflet plugin.\nIt is not intended for productive use.\n\nVisit https://github.com/buche/leaflet-openweathermap for more information.\n\nClick OK to proceed with the map or click Cancel to visit Github.")) {
-		//	window.location.href = "https://github.com/buche/leaflet-openweathermap";
-		//} */
-	</script>
-	
-	
-<div id="map"></div>
- 
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
-    <script src="OWM.js"></script>
-    <script>
-        var map = L.map('map').setView([60, 50], 3);
+		
+		{%for item in coord%}
+        var map = L.map('map').setView([{{api.coord.lat}}, {{api.coord.lon}}], 10);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
         }).addTo(map);
+		L.tileLayer('https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=2bb229a44403af08980fc4be234f94a9', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        }).addTo(map);
         
-        var owm = new L.OWMLayer({key: '2bb229a44403af08980fc4be234f94a9'});
-        map.addLayer(owm);
+		L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=2bb229a44403af08980fc4be234f94a9', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        }).addTo(map);
+		 
+		{%endfor%} 
+		
+		//{s}.sat.owm.io/sql/{z}/{x}/{y}/?appid={APIKEY}&overzoom=true&op=rgb&from=cloudless&select=b4,b3,b2
+		////{s}.sat.owm.io/sql/{z}/{x}/{y}/?appid={APIKEY}&overzoom=true&op=rgb&from=cloudless&select=b4,b3,b2
+</script>
 
 </body>
 
