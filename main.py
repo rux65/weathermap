@@ -1,10 +1,10 @@
-#import requests
+import requests
 import json
 from flask import Flask , render_template, request, url_for, flash, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
-#import gmaps
+import gmaps
 
 
 #imputting a secrety key to make more secure- n=random changing variable would be better
@@ -92,11 +92,11 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
-#r=requests.get("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f" %(api['coord']['lat']+0.2, api['coord']['lon']+0.2))
-#print(r.text)
+r=requests.get("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f" %(api['coord']['lat']+0.2, api['coord']['lon']+0.2))
+print(r.text)
 
-#print(response.text)
-#return render_template("location.html", api=api,coord=coord, weather=weather,main=main, wind=wind)
+print(response.text)
+return render_template("location.html", api=api,coord=coord, weather=weather,main=main, wind=wind)
 
 
 app.run(debug=True) # always run with debug true
