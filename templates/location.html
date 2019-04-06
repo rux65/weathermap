@@ -7,10 +7,10 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}">
 	<link rel="stylesheet" type="text/css" href="static/leaflet-openweathermap.css" />
 	<link rel="stylesheet" type="text/css" href="static/files/map.css" />
-	
+
 	<!--script src="static/leaflet.js"></script-->
 	<!--script src="static/leaflet/leaflet.js"></script-->
-	
+
 	<script src="static/leaflet/Permalink.js"></script>
 	<script src="static/leaflet/Permalink.Layer.js"></script>
 	<script src="static/leaflet/Permalink.Overlay.js"></script>
@@ -20,16 +20,16 @@
 	<script src="static/leaflet/leaflet-languageselector.js"></script>
 	<!--script src="static/files/map_i18n.js"></script-->
 	<script src="static/files/map.js"></script>
-	
+
 	<!--script type="text/javascript" src="leaflet/leaflet.js"></script-->
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet-openweathermap.css') }}">
 	<script type=" text/javascript" src="static/leaflet-openweathermap.js"></script>
-	
+
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
     <script src="static/OWM.js"></script>
-	
+
 	 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <!--script src="static/heatmap.js"></script-->
@@ -67,7 +67,7 @@
 
 
 	<script>
-		
+
 		{%for item in coord%}
         var map = L.map('map').setView([{{api.coord.lat}}, {{api.coord.lon}}], 8);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -78,14 +78,14 @@
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
         }).addTo(map);
-        
+
 		L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=2bb229a44403af08980fc4be234f94a9', {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
         }).addTo(map);
-		 
-		{%endfor%} 
-		
+
+		{%endfor%}
+
 		//{s}.sat.owm.io/sql/{z}/{x}/{y}/?appid={APIKEY}&overzoom=true&op=rgb&from=cloudless&select=b4,b3,b2
 		////{s}.sat.owm.io/sql/{z}/{x}/{y}/?appid={APIKEY}&overzoom=true&op=rgb&from=cloudless&select=b4,b3,b2
 </script>
