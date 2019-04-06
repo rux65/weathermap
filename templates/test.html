@@ -1,0 +1,14 @@
+{%extends "weatherApi.html"%}
+{%block body%}
+
+<p>Please Enter Location  in the Format City, Country</p>
+<div id="contact-form">
+	<form method ="post" action="/location">
+	<label for="text">Location</label>
+	<input type="text" id="text" name="text", required="required">
+	<input type="submit" value="submit" id="submit-button">
+	</form>
+	
+</div>
+
+{%endblock%}
