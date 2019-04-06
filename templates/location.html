@@ -8,8 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="static/leaflet-openweathermap.css" />
 	<link rel="stylesheet" type="text/css" href="static/files/map.css" />
 	
-	<script src="static/leaflet.js"></script>
-	<script src="static/leaflet/leaflet.js"></script>
+	<!--script src="static/leaflet.js"></script-->
+	<!--script src="static/leaflet/leaflet.js"></script-->
 	
 	<script src="static/leaflet/Permalink.js"></script>
 	<script src="static/leaflet/Permalink.Layer.js"></script>
@@ -18,10 +18,10 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet-languageselector.css') }}">
 
 	<script src="static/leaflet/leaflet-languageselector.js"></script>
-	<script src="staticfiles/map_i18n.js"></script>
+	<!--script src="static/files/map_i18n.js"></script-->
 	<script src="static/files/map.js"></script>
 	
-	<script type="text/javascript" src="leaflet/leaflet.js"></script>
+	<!--script type="text/javascript" src="leaflet/leaflet.js"></script-->
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet-openweathermap.css') }}">
 	<script type=" text/javascript" src="static/leaflet-openweathermap.js"></script>
 	
@@ -32,8 +32,8 @@
 	
 	 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script src="static/heatmap.js"></script>
-    <script src="/plugins/leaflet-heatmap/leaflet-heatmap.js"></script>
+    <!--script src="static/heatmap.js"></script-->
+    <!--script src="static/leaflet-heatmap.js"></script-->
 </head>
 
 <body>
@@ -41,14 +41,14 @@
 {%for item in coord%}
 <p>weather at longitude{{api.coord.lon}} and latitude {{api.coord.lat}} is:</p>
 {%endfor%}
+<img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:100">
 
-<img src="{{url_for('static', filename='sun.png', width=100)}}">
 <ul style="width:70%; margin:0 auto; border:1px solid; background:grey; border-radius:5px; list-style-type:none;">
 <li>
 {% if api["weather"]["main"]=="Rain" %}
-<img src="{{url_for('static', filename='sun.png', width=100)}}">papa
+<img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:100">
 {%elif api["weather"]["main"]=="Sunny" %}
-<img src="{{url_for('static', filename='es.png', width=100)}}">mama
+<img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:100">
 {%endif%}
 </li>
 <li>{%for item in weather%} {{item.main}} {%endfor%}
