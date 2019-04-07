@@ -34,6 +34,7 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <!--script src="static/heatmap.js"></script-->
     <!--script src="static/leaflet-heatmap.js"></script-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 </head>
 
 <body>
@@ -43,13 +44,13 @@
 {%endfor%}
 <!--img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:100"-->
 
-<!--Rain-->
 
+<div style="display:inline; position:relative;">
 
-<div style="width:60%; margin:0 auto; border:1px solid; background:#e6ffff; border-radius:10px;display:flex;">
+<!--weather today-->
+<div style="width:30%; position:relative; margin-bottom:1%;border:1px solid; background:#F8FDFF; border-radius:10px;display:flex;">
 
-<div style="diplay:inline; width:30%; position:relative; margin-top:3%; text-align:center">
-
+<div style="diplay:inline; width:30%; position:relative; margin-top:15%; text-align:center">
 <!-- icons from <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 -->
 {%for item in weather%}
@@ -81,26 +82,120 @@
 {%endfor%}
 </div>
 
-<div style="width:40%;display:inline-block; position:relative;">
-<ul>
-<li><p>Condition:{%for item in weather%} {{item.main}}{%endfor%}</p></li>
-<li><p>Status:{%for item in weather%} {{item.description}} {%endfor%}</p></li>
-<li><p>Temperature: {%for item in main%} {{api.main.temp}} {%endfor%}</p></li>
-</ul>
-</div>
-<div style="width:40%;display:inline-block; position:relative;">
-<ul>
-<li><p>Expected Low: {%for item in main%} {{item.temp_min}} {%endfor%}</p></li>
-<li><p>Expected High: {%for item in main%} {{item.temp_max}} {%endfor%}</p></li>
-<li><p>Humidity{%for item in main%} {{item.humidity}} {%endfor%}</p></li>
+<div style="width:70%;display:inline-block; position:relative; padding:1%; color:#1D5166; font-weight:600">
+<ul style="list-style-type:none">
+<li> Weather Today</li>
+<li>Condition:{%for item in weather%} {{item.main}}{%endfor%}</li>
+<li>Status:{%for item in weather%} {{item.description}} {%endfor%}</li>
+<li>Temperature: {%for item in main%} {{api.main.temp}} {%endfor%}</li>
+<li>Expected Low: {%for item in main%} {{item.temp_min}} {%endfor%}</li>
+<li>Expected High: {%for item in main%} {{item.temp_max}} {%endfor%}</li>
+<li>Humidity: {%for item in range(0,1)%}{{means_humidity.0}}{%endfor%}</li>
 </ul>
 </div>
 </div>
 
+<!--weather tomorrow-->
+
+<div style="width:30%; position:relative; margin-bottom:1%;border:1px solid; background:#F8FDFF; border-radius:10px;display:flex;">
+
+<div style="diplay:inline; width:30%; position:relative; margin-top:15%; text-align:center">
+<!-- icons from <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+-->
+{%for item in range(0,1) %}
+{%if "clear" in status.0 %}
+<img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:30%">
+{%elif "scattered clouds" in status.0 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "few clouds" in status.0 %}
+<img src="{{ url_for('static', filename='media/clouds.png')}}" alt="cloud" style="width:30%">
+{% elif "broken" in status.0 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "scattered" in status.0 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "light rain" in status.0 %}
+<img src="{{ url_for('static', filename='media/drop.png')}}" alt="rain" style="width:30%">
+{%elif "mist" in status.0 %}
+<img src="{{ url_for('static', filename='media/fog.png')}}" alt="sun" style="width:30%">
+{%elif "haze" in status.0 %}
+<img src="{{ url_for('static', filename='media/fog.png')}}" alt="sun" style="width:30%">
+{% elif "rain" in status.0 %}
+<img src="{{ url_for('static', filename='media/rain.png')}}" alt="rain" style="width:30%">
+{% elif "snow" in status.0 %}
+<img src="{{ url_for('static', filename='media/snow.png')}}" alt="rain" style="width:30%">
+{% elif "wind" in status.0 %}
+<img src="{{ url_for('static', filename='media/wind.png')}}" alt="rain" style="width:30%">
+{% elif "storm" in status.0 %}
+<img src="{{ url_for('static', filename='media/storm.png')}}" alt="rain" style="width:30%">
+{%endif%}
+{%endfor%}
+</div>
+
+<div style="width:70%;display:inline-block; position:relative; padding:1%; color:#1D5166; font-weight:600">
+<ul style="list-style-type:none">
+<li>Weather Tomorrow</li>
+<li>Condition:{%for item in range(0,1)%}{{condition.0}}{%endfor%}</li>
+<li>Status:{%for item in range(0,1)%}{{status.0}}{%endfor%}</li>
+<li>Temperature: {%for item in range(0,1)%}{{means_temp.1}}{%endfor%}<li>
+<li>Expected Low: {%for item in range(0,1)%}{{means_temp_low.1}}{%endfor%}</li>
+<li>Expected High: {%for item in range(0,1)%}{{means_temp_high.1}}{%endfor%}</li>
+<li>Humidity: {%for item in range(0,1)%}{{means_humidity.1}}{%endfor%}</li>
+</ul>
+</div>
+</div>
+
+<!-- weather day 2-->
+<div style="width:30%; position:relative; margin-bottom:1%;border:1px solid; background:#F8FDFF; border-radius:10px;display:flex;">
+
+<div style="diplay:inline; width:30%; position:relative; margin-top:15%; text-align:center">
+<!-- icons from <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+-->
+{%for item in range(0,1) %}
+{%if "clear" in status.1 %}
+<img src="{{ url_for('static', filename='media/sun.png')}}" alt="sun" style="width:30%">
+{%elif "scattered clouds" in status.1 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "few clouds" in status.1 %}
+<img src="{{ url_for('static', filename='media/clouds.png')}}" alt="cloud" style="width:30%">
+{% elif "broken" in condition.1 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "scattered" in condition.1 %}
+<img src="{{ url_for('static', filename='media/sun_cloud.png')}}" alt="sun_cloud" style="width:30%">
+{% elif "light rain" in condition.1 %}
+<img src="{{ url_for('static', filename='media/drop.png')}}" alt="rain" style="width:30%">
+{%elif "mist" in condition.1 %}
+<img src="{{ url_for('static', filename='media/fog.png')}}" alt="sun" style="width:30%">
+{%elif "haze" in condition.1 %}
+<img src="{{ url_for('static', filename='media/fog.png')}}" alt="sun" style="width:30%">
+{% elif "rain" in condition.1 %}
+<img src="{{ url_for('static', filename='media/rain.png')}}" alt="rain" style="width:30%">
+{% elif "snow" in condition.1 %}
+<img src="{{ url_for('static', filename='media/snow.png')}}" alt="rain" style="width:30%">
+{% elif "wind" in condition.1 %}
+<img src="{{ url_for('static', filename='media/wind.png')}}" alt="rain" style="width:30%">
+{% elif "storm" in condition.1 %}
+<img src="{{ url_for('static', filename='media/storm.png')}}" alt="rain" style="width:30%">
+{%endif%}
+{%endfor%}
+</div>
+
+<div style="width:70%;display:inline-block; position:relative; padding:1%; color:#1D5166; font-weight:600">
+<ul style="list-style-type:none">
+<li>Weather {%for item in range(0,1)%}{{day2}}{%endfor%} </li>
+<li>Condition:{%for item in range(0,1)%}{{condition.1}}{%endfor%}</li>
+<li>Status:{%for item in range(0,1)%}{{status.1}}{%endfor%}</li>
+<li>Temperature: {%for item in range(0,1)%}{{means_temp.2}}{%endfor%}<li>
+<li>Expected Low: {%for item in range(0,1)%}{{means_temp_low.2}}{%endfor%}</li>
+<li>Expected High: {%for item in range(0,1)%}{{means_temp_high.2}}{%endfor%}</li>
+<li>Humidity: {%for item in range(0,1)%}{{means_humidity.2}}{%endfor%}</li>
+</ul>
+</div>
+</div>
 
 
+</div>
 
-<div id="map" style="width:70%;margin:2% auto" ></div>
+<div id="map" style="display:inline; position:absolute; margin-top:-50%;margin-left:30%; float:right; width:65%; height:70%" ></div>
 
 
 
