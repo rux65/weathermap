@@ -1,18 +1,53 @@
 import requests
 import json
 from flask import Flask , render_template, request
-import gmaps 
+
+from flask import url_for, flash, redirect
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
+#import gmaps
+
+#imputting a secrety key to make more secure- n=random changing variable would be better
 
 app=Flask("myApp")
+
+#setting up apps for the registationa and login forms that will be used in the main python document
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+
+class LoginForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
+
+
+@app.route("/home")
+def home():
+    return render_template('home.html', home='home')
+
+@app.route("/about")
+def about():
+    return render_template('about.html', title='About')
+
 	
 @app.route("/postcode", methods=["POST", "GET"])
 def location():
-	return render_template("weatherApi.html")
+	return render_template("weatherApi.html", title="postcode")
 
 def meh():
 	form_data=request.form
 	var=form_data["text"]
-	
 	print(var)
 
 
@@ -23,7 +58,6 @@ endpoint2 ="http://api.openweathermap.org/data/2.5/forecast/"
 	#print (response.status_code)
 	#print (response.headers["content-type"])
 	#print(response.text)
-
 
 
 @app.route("/location", methods=["post"])
@@ -41,59 +75,24 @@ def weather_reply():
 	main=[api["main"]]
 	wind=api["wind"]
 	
-	dates=[]
+	dates=[(api2["list"][0]["dt_txt"][0:10])]
 	for i in range(0, len(api2["list"])):
-		dates.append(api2["list"][0]["dt_txt"][0:10])
 		if api2["list"][i]["dt_txt"][0:10] not in dates:
 			dates.append(api2["list"][i]["dt_txt"][0:10])
-	print (dates)
+	#print (dates)
 		
 	
 	#print(red.text)
 	i=0
 	
+	day0=dates[0]
+	day1=dates[1]
+	day2=dates[2]
+	day3=dates[3]
+	day4=dates[4]
+	if dates[5]:
+		day5=dates[5]
 	
-	day0=api2["list"][0]["dt_txt"][0:10]#2019-04-07
-	#print(api2["list"][0]["dt_txt"][9], "lala please print")
-	#print (day0)
-		
-	if int(api2["list"][0]["dt_txt"][8:10])+1<10:
-		day1=api2["list"][0]["dt_txt"][0:9]+str(int(float(api2["list"][0]["dt_txt"][9]))+1)#2019-04-08
-		#print(day1)
-	else:
-		day1=api2["list"][0]["dt_txt"][0:8]+str(int(float(api2["list"][0]["dt_txt"][8:10]))+1)#2019-04-08
-		
-		
-	if int(api2["list"][0]["dt_txt"][8:10])+2<10:
-		day2=api2["list"][0]["dt_txt"][0:9]+str(int(float(api2["list"][0]["dt_txt"][9]))+2)#2019-04-08
-		#print(day2)
-	else:
-		day2=api2["list"][0]["dt_txt"][0:8]+str(int(api2["list"][0]["dt_txt"][8:10])+2)#2019-04-08
-		#print(day2)
-	if int(api2["list"][0]["dt_txt"][8:10])+3<10:
-		day3=api2["list"][0]["dt_txt"][0:9]+str(int(api2["list"][0]["dt_txt"][9])+3)#2019-04-08
-		#print (api2["list"][0]["dt_txt"][8:10])
-		#print(day3)
-	else:
-		day3=api2["list"][0]["dt_txt"][0:8]+str(int(api2["list"][0]["dt_txt"][8:10])+3)#2019-04-08
-		#print(day3)
-	if int(api2["list"][0]["dt_txt"][8:10])+4<10:
-		day4=api2["list"][0]["dt_txt"][0:9]+str(int(api2["list"][0]["dt_txt"][9])+4)#2019-04-08
-		#print(day4)
-	else:
-		day4=api2["list"][0]["dt_txt"][0:8]+str(int(api2["list"][0]["dt_txt"][8:10])+4)#2019-04-08
-		#print(day4)
-	if int(api2["list"][0]["dt_txt"][8:10])+5<10:
-		day5=api2["list"][0]["dt_txt"][0:8]+str(int(api2["list"][0]["dt_txt"][9])+5)#2019-04-08
-		#print(day5)
-	else:
-		if api2["list"][0]["dt_txt"][5:6] in "01,03,05,07,08,10,12" and int(api2["list"][0]["dt_txt"][8:10])+5>31:
-			day5=api2["list"][0]["dt_txt"][0:4]+str(int(api2["list"][0]["dt_txt"][5:7])+1)+str(int(api2["list"][0]["dt_txt"][8:10])+5-31)#2019-04-08
-		elif api2["list"][0]["dt_txt"][5:6] in "04,06,09,11" and int(api2["list"][0]["dt_txt"][8:10])+5>30:
-			day5=api2["list"][0]["dt_txt"][0:4]+str(int(api2["list"][0]["dt_txt"][5:7])+1)+str(int(api2["list"][0]["dt_txt"][8:10])+5-30)#2019-04-08
-		else:
-			day5=api2["list"][0]["dt_txt"][0:8]+str(int(api2["list"][0]["dt_txt"][8:10])+5)#2019-04-08
-		#print(day5)
 	
 		
 	count=0
@@ -109,21 +108,27 @@ def weather_reply():
 	condition=[]
 	status=[]
 	
+	
 	for i in range(0,len(api2["list"])):
 		if api2["list"][i]["dt_txt"][0:10]==day0:
 			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
 			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
 			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
 			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1	
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
+			count+=1
+			
+	
+	if count>0:
+		total=round(mean_temp/count,2)
+		means_temp.append(total)
+		total=round(mean_temp_low/count,2)
+		means_temp_low.append(total)
+		total=round(mean_temp_high/count,2)
+		means_temp_high.append(total)
+		total=round(mean_hum/count,2)
+		means_humidity.append(total)
+	else:
+		pass
 	
 	count=0
 	mean_temp=0
@@ -138,6 +143,13 @@ def weather_reply():
 			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
 			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
 			count+=1	
+			if "12" in api2["list"][i]["dt_txt"][11:13]:
+				#print (api2["list"][i]["dt_txt"][11:13])
+				ind=api2["list"][i]["dt_txt"].index("12")
+				#print(ind)
+				condition.append(api2["list"][ind]["weather"][0]["main"])
+				status.append(api2["list"][ind]["weather"][0]["description"])
+			
 	total=round(mean_temp/count,2)
 	means_temp.append(total)
 	total=round(mean_temp_low/count,2)
@@ -159,7 +171,14 @@ def weather_reply():
 			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
 			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
 			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1	
+			count+=1
+			if "12" in api2["list"][i]["dt_txt"][11:13]:
+				print (api2["list"][i]["dt_txt"][11:13])
+				ind=api2["list"][i]["dt_txt"].index("12")+8
+				print(ind)
+				condition.append(api2["list"][ind]["weather"][0]["main"])
+				status.append(api2["list"][ind]["weather"][0]["description"])
+			
 	total=round(mean_temp/count,2)
 	means_temp.append(total)
 	total=round(mean_temp_low/count,2)
@@ -220,36 +239,58 @@ def weather_reply():
 	mean_hum=0
 	
 	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day5:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1
+		if day5:
+			if api2["list"][i]["dt_txt"][0:10]==day5:
+				mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
+				mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
+				mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
+				mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
+				count+=1
 	
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
-	
-	
-
-	
-	
-	print(means_temp, means_temp_low, means_temp_high, means_humidity)	
-
+	if count>0:
+		total=round(mean_temp/count,2)
+		means_temp.append(total)
+		total=round(mean_temp_low/count,2)
+		means_temp_low.append(total)
+		total=round(mean_temp_high/count,2)
+		means_temp_high.append(total)
+		total=round(mean_hum/count,2)
+		means_humidity.append(total)
+	else:
+		pass
 	
 	
+	#print(means_temp, means_temp_low, means_temp_high, means_humidity)	
+	
+	print(condition, status)	
+		
 	#r=requests.get("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f" %(api['coord']['lat']+0.2, api['coord']['lon']+0.2))
 	#print(r.text)
 	#print(weather)
 	#print(response.text)
-	return render_template("location.html", api=api,coord=coord, weather=weather[0],main=main, wind=wind)
+	return render_template("location.html", api=api,coord=coord, weather=weather[0],main=main, wind=wind, means_temp=means_temp,means_temp_low=means_temp_low, means_temp_high=means_temp_high, means_humidity=means_humidity, day2=day2, status=status, condition=condition )
 	#return render_template("location.html", api=api)
 	
+	
+	
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash('Account created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        #no database create therefore can only login with this and no other email or password 'created' on the registration form
+        if form.email.data == 'weathermap@gmail.com' and form.password.data == 'password':
+            flash('You have been logged in!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html', title='Login', form=form)	
 app.run(debug=True) # always run with debug true 
 
