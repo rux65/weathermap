@@ -90,16 +90,11 @@ def weather_reply():
 	day2=dates[2]
 	day3=dates[3]
 	day4=dates[4]
-	if dates[5]:
-		day5=dates[5]
+	try:
+		day5 = dates[5]
+	except IndexError:
+		day5 = 'null'
 	
-	
-		
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
 	
 	means_temp_low=[]
 	means_temp=[]
@@ -108,159 +103,58 @@ def weather_reply():
 	condition=[]
 	status=[]
 	
-	
-	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day0:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1
-			
-	
-	if count>0:
-		total=round(mean_temp/count,2)
-		means_temp.append(total)
-		total=round(mean_temp_low/count,2)
-		means_temp_low.append(total)
-		total=round(mean_temp_high/count,2)
-		means_temp_high.append(total)
-		total=round(mean_hum/count,2)
-		means_humidity.append(total)
-	else:
-		pass
-	
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
-	
-	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day1:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1	
-			if "12" in api2["list"][i]["dt_txt"][11:13]:
-				#print (api2["list"][i]["dt_txt"][11:13])
-				ind=api2["list"][i]["dt_txt"].index("12")
-				#print(ind)
-				condition.append(api2["list"][ind]["weather"][0]["main"])
-				status.append(api2["list"][ind]["weather"][0]["description"])
-			
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
-	
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
-	
-	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day2:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1
-			if "12" in api2["list"][i]["dt_txt"][11:13]:
-				print (api2["list"][i]["dt_txt"][11:13])
-				ind=api2["list"][i]["dt_txt"].index("12")+8
-				print(ind)
-				condition.append(api2["list"][ind]["weather"][0]["main"])
-				status.append(api2["list"][ind]["weather"][0]["description"])
-			
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
-	
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
-	
-	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day3:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1	
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
-	
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
-	
-	for i in range(0,len(api2["list"])):
-		if api2["list"][i]["dt_txt"][0:10]==day4:
-			mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-			mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-			mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-			mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-			count+=1	
-	total=round(mean_temp/count,2)
-	means_temp.append(total)
-	total=round(mean_temp_low/count,2)
-	means_temp_low.append(total)
-	total=round(mean_temp_high/count,2)
-	means_temp_high.append(total)
-	total=round(mean_hum/count,2)
-	means_humidity.append(total)
-	
-	count=0
-	mean_temp=0
-	mean_temp_low=0
-	mean_temp_high=0
-	mean_hum=0
-	
-	for i in range(0,len(api2["list"])):
-		if day5:
-			if api2["list"][i]["dt_txt"][0:10]==day5:
-				mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
-				mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
-				mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
-				mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
-				count+=1
-	
-	if count>0:
-		total=round(mean_temp/count,2)
-		means_temp.append(total)
-		total=round(mean_temp_low/count,2)
-		means_temp_low.append(total)
-		total=round(mean_temp_high/count,2)
-		means_temp_high.append(total)
-		total=round(mean_hum/count,2)
-		means_humidity.append(total)
-	else:
-		pass
+	def series(day):
+		count=0
+		mean_temp=0
+		mean_temp_low=0
+		mean_temp_high=0
+		mean_hum=0
+		for i in range(0,len(api2["list"])):
+			if day=="nul":
+				pass
+			else:
+				if api2["list"][i]["dt_txt"][0:10]==day:
+					mean_temp=mean_temp+float(api2["list"][i]["main"]["temp"])
+					mean_temp_low=mean_temp_low+float(api2["list"][i]["main"]["temp_min"])
+					mean_temp_high=mean_temp_high+float(api2["list"][i]["main"]["temp_max"])
+					mean_hum=mean_hum+float(api2["list"][i]["main"]["humidity"])
+					count+=1
+					#print(mean_temp_low)
+					#print (api2["list"][i]["main"]["temp_min"])
+					print (api2["list"][i]["main"]["temp_max"])
+					if "12" in api2["list"][i]["dt_txt"][11:13]:
+						#print (api2["list"][i]["dt_txt"][11:13])
+						ind=api2["list"][i]["dt_txt"].index("12")+1
+						ind2=ind+8
+						condition.append(api2["list"][ind]["weather"][0]["main"])
+						status.append(api2["list"][ind]["weather"][0]["description"])
+						condition.append(api2["list"][ind2]["weather"][0]["main"])
+						status.append(api2["list"][ind2]["weather"][0]["description"])
+		
+		if count>0:
+			total=round(mean_temp/count,2)
+			means_temp.append(total)
+			print(mean_temp_low, "haha")
+			total1=round(mean_temp_low/count,2)
+			print(total1,"la")
+			means_temp_low.append(total1)
+			print(mean_temp_high, "haha")
+			total=round(mean_temp_high/count,2)
+			means_temp_high.append(total)
+			total=round(mean_hum/count,2)
+			means_humidity.append(total)
+		else:
+			pass
+		
+		return mean_temp_low
+		
+	series(day1)
+	series(day2)
+	#series(day3)
 	
 	
-	#print(means_temp, means_temp_low, means_temp_high, means_humidity)	
+	
+	print(means_temp, means_temp_low, means_temp_high, means_humidity)	
 	
 	print(condition, status)	
 		
