@@ -11,6 +11,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 #imputting a secrety key to make more secure- n=random changing variable would be better
 
 app=Flask("myApp")
+app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 #setting up apps for the registationa and login forms that will be used in the main python document
 
@@ -40,7 +41,7 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
-	
+
 @app.route("/postcode", methods=["POST", "GET"])
 def location():
 	return render_template("weatherApi.html", title="postcode")
@@ -51,7 +52,7 @@ def meh():
 	print(var)
 
 
-	
+
 endpoint = "http://api.openweathermap.org/data/2.5/weather"#- corrent one
 endpoint2 ="http://api.openweathermap.org/data/2.5/forecast/"
 	#print (response.url)#
@@ -64,7 +65,7 @@ endpoint2 ="http://api.openweathermap.org/data/2.5/forecast/"
 def weather_reply():
 	form_data=request.form
 	var=form_data["text"]
-	
+
 	payload = {"q":var,"units":"metric","appid":"2bb229a44403af08980fc4be234f94a9"}
 	response = requests.get(endpoint, params=payload) #- correct
 	red = requests.get(endpoint2, params=payload)
@@ -74,17 +75,17 @@ def weather_reply():
 	weather= [api["weather"]]
 	main=[api["main"]]
 	wind=api["wind"]
-	
+
 	dates=[(api2["list"][0]["dt_txt"][0:10])]
 	for i in range(0, len(api2["list"])):
 		if api2["list"][i]["dt_txt"][0:10] not in dates:
 			dates.append(api2["list"][i]["dt_txt"][0:10])
 	#print (dates)
-		
-	
+
+
 	#print(red.text)
 	i=0
-	
+
 	day0=dates[0]
 	day1=dates[1]
 	day2=dates[2]
@@ -94,15 +95,15 @@ def weather_reply():
 		day5 = dates[5]
 	except IndexError:
 		day5 = 'null'
-	
-	
+
+
 	means_temp_low=[]
 	means_temp=[]
 	means_temp_high=[]
 	means_humidity=[]
 	condition=[]
 	status=[]
-	
+
 	def series(day):
 		count=0
 		mean_temp=0
@@ -130,7 +131,7 @@ def weather_reply():
 						status.append(api2["list"][ind]["weather"][0]["description"])
 						condition.append(api2["list"][ind2]["weather"][0]["main"])
 						status.append(api2["list"][ind2]["weather"][0]["description"])
-		
+
 		if count>0:
 			total=round(mean_temp/count,2)
 			means_temp.append(total)
@@ -145,28 +146,28 @@ def weather_reply():
 			means_humidity.append(total)
 		else:
 			pass
-		
+
 		return mean_temp_low
-		
+
 	series(day1)
 	series(day2)
 	#series(day3)
-	
-	
-	
-	print(means_temp, means_temp_low, means_temp_high, means_humidity)	
-	
-	print(condition, status)	
-		
+
+
+
+	print(means_temp, means_temp_low, means_temp_high, means_humidity)
+
+	print(condition, status)
+
 	#r=requests.get("http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f" %(api['coord']['lat']+0.2, api['coord']['lon']+0.2))
 	#print(r.text)
 	#print(weather)
 	#print(response.text)
 	return render_template("location.html", api=api,coord=coord, weather=weather[0],main=main, wind=wind, means_temp=means_temp,means_temp_low=means_temp_low, means_temp_high=means_temp_high, means_humidity=means_humidity, day2=day2, status=status, condition=condition )
 	#return render_template("location.html", api=api)
-	
-	
-	
+
+
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -185,6 +186,5 @@ def login():
             return redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)	
-app.run(debug=True) # always run with debug true 
-
+    return render_template('login.html', title='Login', form=form)
+app.run(debug=True) # always run with debug true
