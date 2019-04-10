@@ -3,5 +3,4 @@ gunicorn
 waitress
 requests
 flask_wtf
-json
 wtforms
