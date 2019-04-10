@@ -187,4 +187,4 @@ def login():
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
-app.run(debug=True) # always run with debug true
+#app.run(debug=True) # always run with debug true
