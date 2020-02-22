@@ -11,7 +11,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 #imputting a secrety key to make more secure- n=random changing variable would be better
 
 app=Flask("myApp")
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = 'xxxxxxxxxxxxxxxx'
 
 #setting up apps for the registationa and login forms that will be used in the main python document
 
